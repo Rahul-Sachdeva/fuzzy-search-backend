@@ -36,10 +36,9 @@ const registerUser = async (req, res) => {
   ) {
     throw new Error("All fields are required");
   }
-  const localPathName = req.file?.path;
   let uploadResult;
-  if (localPathName) {
-    uploadResult = await uploadCloudinary(localPathName);
+  if (req.file) {
+    uploadResult = await uploadCloudinary(req.file.buffer);
   }
 
   const createdUser = await User.create({

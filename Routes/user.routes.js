@@ -1,7 +1,9 @@
 import express from "express";
 import { deleteUser, getAllUser, getUser, loginUser, logoutUser, registerUser, updateUser } from "../Controllers/user.controller.js";
-import { upload } from "../Middlewares/multer.middleware.js";
 import { authenticateUser } from "../Middlewares/auth.middleware.js";
+import multer from "multer";
+const storage = multer.memoryStorage(); // Store files in memory instead of disk
+export const upload = multer({ storage });
 
 const userRouter = express.Router()
 

@@ -1,9 +1,8 @@
 import { v2 as cloudinary } from "cloudinary";
-import fs from "fs";
+import streamifier from "streamifier"; // Allows uploading buffers directly
 import dotenv from "dotenv";
 
-dotenv.config()
-
+dotenv.config();
 
 cloudinary.config({
   cloud_name: process.env.CLOUD_NAME,
@@ -11,20 +10,29 @@ cloudinary.config({
   api_secret: process.env.API_SECRET,
 });
 
-const uploadCloudinary = async (localPathName) => {
+const uploadCloudinary = async (fileBuffer) => {
   try {
-    if (!localPathName) return null;
-    const uploadResult = await cloudinary.uploader.upload(localPathName, {
-      resource_type: "auto",
-    });
-    console.log("File uploaded on cloudinary successfully!");
+    if (!fileBuffer) return null;
 
-    return uploadResult;
+    return new Promise((resolve, reject) => {
+      const stream = cloudinary.uploader.upload_stream(
+        { resource_type: "auto" }, // Auto-detect file type
+        (error, result) => {
+          if (error) {
+            console.error("Cloudinary Upload Error:", error);
+            reject(error);
+          } else {
+            console.log("File uploaded to Cloudinary successfully!");
+            resolve(result);
+          }
+        }
+      );
+
+      streamifier.createReadStream(fileBuffer).pipe(stream);
+    });
   } catch (error) {
-    fs.unlinkSync(localPathName);
-    console.log(error)
-    throw new Error(error)
-    return null;
+    console.error(error);
+    throw new Error("Upload to Cloudinary failed");
   }
 };
 

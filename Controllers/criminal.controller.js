@@ -101,11 +101,10 @@ const addCriminal = async (req, res) => {
     ) {
       throw new Error("All fields are Required");
     }
-    const localPathName = req.file?.path;
-    
     let uploadResult;
-    if(localPathName){
-      uploadResult = await uploadCloudinary(localPathName);
+    if (req.file) {
+      // Convert memory buffer to a Cloudinary upload stream
+      uploadResult = await uploadCloudinary(req.file.buffer);
     }
   
     const createdCriminal = await Criminal.create({
@@ -147,7 +146,6 @@ const updateCriminal = async (req, res) => {
   try {
     console.log("hello");
     console.log(req.body);
-    console.log(req.files);
     const { name, inCustody, age, description, location, crime} = req.body;
     const {id} = req.params;
     const updatedData = {};
@@ -413,10 +411,10 @@ const addMultipleCriminals = async (req, res) => {
     }
 
     // If photo is provided, upload it to Cloudinary
-    let uploadResult = null;
-    const photo = req.file?.path;
-    if (photo) {
-      uploadResult = await uploadCloudinary(photo); // Assume `photo` is a local path
+    let uploadResult;
+    if (req.file) {
+      // Convert memory buffer to a Cloudinary upload stream
+      uploadResult = await uploadCloudinary(req.file.buffer);
     }
 
     // Create criminal
