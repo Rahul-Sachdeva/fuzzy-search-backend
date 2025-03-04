@@ -1,18 +1,17 @@
 import { connectDb } from "./DB/index.js";
-import dotenv from 'dotenv'
+import dotenv from "dotenv";
 import { app } from "./app.js";
 
+dotenv.config();
 
-dotenv.config()
-
-const port = process.env.PORT || 3000
-
+const port = process.env.PORT || 3000;
 
 connectDb()
   .then(() => {
     app.listen(port, () => {
-      console.log("⚙️  Server started on Port:", port);
+      console.log("⚙️ Server started on Port:", port);
     });
   })
   .catch((err) => console.log(err));
 
+export default app; // ✅ Export the Express app for Vercel
