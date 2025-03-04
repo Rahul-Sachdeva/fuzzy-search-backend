@@ -57,7 +57,7 @@ const getAllLogs = async (req, res) => {
 
 
 // Multer setup for file upload
-const upload = multer({ dest: 'uploads/' });
+const upload = multer({ dest: 'tmp/uploads/' });
 
 const getCriminal = async(req, res) => {
   const {id} = req.params;
