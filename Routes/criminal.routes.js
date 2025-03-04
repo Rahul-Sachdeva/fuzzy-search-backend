@@ -5,7 +5,7 @@ import { authenticateUser } from "../Middlewares/auth.middleware.js";
 import multer from "multer";
 
 // Multer setup for file upload
-const uploadFile = multer({ dest: 'uploads/' });
+const uploadFile = multer({ dest: 'tmp/uploads/' });
 const criminalRouter = express.Router()
 
 criminalRouter.route("/get-criminal/:id").get(getCriminal)
