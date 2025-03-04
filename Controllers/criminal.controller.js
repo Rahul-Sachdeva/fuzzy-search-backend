@@ -1,6 +1,5 @@
 import { Criminal } from "../Models/criminal.model.js";
 import uploadCloudinary from "../Utils/cloudinary.js";
-import multer from "multer"
 import csvParser from "csv-parser"
 import xlsx from "xlsx" // For Excel files
 import fs from "fs"
@@ -55,9 +54,6 @@ const getAllLogs = async (req, res) => {
   }
 };
 
-
-// Multer setup for file upload
-const upload = multer({ dest: 'tmp/uploads/' });
 
 const getCriminal = async(req, res) => {
   const {id} = req.params;
